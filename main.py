@@ -106,13 +106,15 @@ def print_path(node):
 def a_star_search():
     queue = PriorityQueue()
     start_key.f, start_key.g, start_key.h = 0, 0, 0
-    queue.put((start_key.f, start_key.g, start_key.h, start_key))
+    queue.put((start_key.f, start_key))
+    scores_tracker = {}
+    scores_tracker[start_key] = [start_key.f, start_key.g, start_key.h]
     visited = []
 
     while not queue.empty(): #while destination not reached
-        node = queue.get()[3]
+        node = queue.get()[1]
         node.close()
-        node.draw(screen)
+        #node.draw(screen)
         visited.append(node)
         if (node == end):
             print_path(node)
@@ -120,17 +122,20 @@ def a_star_search():
         else:
             neighbors = node.find_neighbors()
             for neighbor in neighbors:
+                if neighbor in visited:
+                    break
                 #create f, g, h values
                 neighbor.h = heuristic(neighbor, end)
-                #dis = euclidean(neighbor, node)
-                neighbor.g = node.g + 1
+                neighbor.g = node.g + euclidean(neighbor, node)
                 neighbor.f = neighbor.g + neighbor.h
                 # if neighbor is already in the queue and its g score is < than its current g score, don't update
-                for item in queue.queue: 
-                    if (item[3] == neighbor) and (neighbor.g > item[3].g):
+                if neighbor in scores_tracker and neighbor.g > scores_tracker[neighbor][1]:
                         continue
                 neighbor.parent = node            
-                queue.put((neighbor.f, neighbor.g, neighbor.h, neighbor))
+                scores_tracker[neighbor] = [neighbor.f, neighbor.g, neighbor.h]
+                queue.put((neighbor.f, neighbor))
+        
+    print('destination not found')
 
 
 class Node:
@@ -165,6 +170,9 @@ class Node:
         return self.color == RED
     
     def reset(self):
+        self.f, self.g, self.h = float('inf'), float('inf'), float('inf')
+        self.neighbors = []
+        self.parent = None
         self.color = WHITE
     
     def close(self):
@@ -194,26 +202,29 @@ class Node:
         row, col = self.position()
         for i in range(row - 1, row + 2):
             for j in range(col - 1, col + 2):
-                neighbor_node = game_grid[i][j]
+                print(i, j)
                 # if it's outside the game boundaries
                 if (i == row and j == col) or (i < 0) or (j < 0) or (i >= TOTAL_ROWS) or (j >= TOTAL_COLS):
                     continue
                 # if it's a diagonal neighbor, don't add it
-                #elif (i == row - 1 and j == col - 1) or (i == row - 1 and j == col + 1) or (i == row + 1 and j == col - 1) or (i == row + 1 and j == col + 1):
-                    #continue
+                elif (i == row - 1 and j == col - 1) or (i == row - 1 and j == col + 1) or (i == row + 1 and j == col - 1) or (i == row + 1 and j == col + 1):
+                    continue
                 # if it's an obstacle, don't add it
-                elif neighbor_node.is_obstacle() or neighbor_node.is_visited():
+                neighbor_node = game_grid[i][j]
+                if neighbor_node.is_obstacle() or neighbor_node.is_visited():
                     continue
                 else:
                     self.neighbors.append(neighbor_node)
         return self.neighbors
 
     def __lt__(self, other):
-        #return self.f <= other.f 
-        return False 
+        return self.f <= other.f 
     
     def __eq__(self, other):
         return self.position() == other.position()
+    
+    def __hash__(self):
+        return hash(str(self.position()))
 
 if __name__ == "__main__":
     main()
