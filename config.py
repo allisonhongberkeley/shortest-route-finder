@@ -1,3 +1,4 @@
+global screen 
 WINDOW_WIDTH = 1000
 PURPLE = (203, 195, 227)
 WHITE = (255,255,255)
