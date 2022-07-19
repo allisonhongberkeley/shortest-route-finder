@@ -3,22 +3,8 @@ import pygame
 from pygame.locals import *
 from queue import PriorityQueue
 import sys
-import time 
-
-WINDOW_WIDTH = 1000
-PURPLE = (203, 195, 227)
-WHITE = (255,255,255)
-BLACK = (0, 0, 0)
-RED = (189, 45, 48)
-GREEN = (139, 189, 92) 
-RED = (191, 63, 63)
-BLUE = (51, 157, 171)
-PINK = (224, 187, 177)
-BACKGROUND_COLOR = PINK
-TOTAL_ROWS = 50
-TOTAL_COLS = 50
-width = WINDOW_WIDTH // TOTAL_ROWS
-
+import config
+import time
 
 class Button():
     button_width = 200
@@ -31,23 +17,25 @@ class Button():
         self.text = text
     
     def draw(self, screen):
-        font = pygame.font.SysFont('Calibri', 35)
-        text = font.render(self.text, False, (0, 0, 0))
         rect = pygame.Rect((self.x, self.y), (Button.button_width, Button.button_height))
-        pygame.draw.rect(screen, self.color, rect, 0)
+        pygame.draw.rect(screen, self.color, rect, 0, 2)
+
+        font = pygame.font.SysFont('Calibri', 60)
+        text= font.render(self.text, False, (0, 0, 0))
+        screen.blit(text, (self.x + Button.button_width // 2 - text.get_width() // 2, self.y + Button.button_height // 2 - text.get_height() // 2))
 
 
 def main():
     global screen, clock, game_grid, start_key, end, set_started, set_ended
     pygame.init() 
-    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_WIDTH))
+    screen = pygame.display.set_mode((config.WINDOW_WIDTH, config.WINDOW_WIDTH))
     clock = pygame.time.Clock()
-    screen.fill(BACKGROUND_COLOR)
+    screen.fill(config.BACKGROUND_COLOR)
     pygame.display.set_caption("Shortest Path Finding: Visualization")
     pygame.display.flip() 
     game_grid = drawAGrid(); 
-    #reset_button = Button(10, 10, BLUE, 'reset')
-    #reset_button.draw(screen)
+    reset_button = Button(10, 10, config.TAN, 'reset')
+    reset_button.draw(screen)
 
     playing = True
     start_key, end_key = None, None
@@ -89,10 +77,10 @@ def main():
 def drawAGrid():
     # here, initiate all the nodes and draw Nodes 
     # create 2D array grid of nodes
-    grid = [[None] * TOTAL_COLS for i in range(TOTAL_ROWS)]
-    for x in range(TOTAL_ROWS):
-        for y in range(TOTAL_COLS):
-            node = Node(x, y, width)
+    grid = [[None] * config.TOTAL_COLS for i in range(config.TOTAL_ROWS)]
+    for x in range(config.TOTAL_ROWS):
+        for y in range(config.TOTAL_COLS):
+            node = Node(x, y, config.width)
             grid[x][y] = node
             node.draw(screen)        
     return grid
@@ -108,7 +96,7 @@ def euclidean(node_one, node_two):
     return sqrt(abs(x_1-x_2)**2 + abs(y_1-y_2)**2)
 
 def click(pos): 
-    row, col = tuple(coord // width for coord in pos)
+    row, col = tuple(coord // config.width for coord in pos)
     clicked = game_grid[row][col]
     return clicked
 
@@ -164,7 +152,7 @@ class Node:
         self.row = row
         self.x_coordinate = row * width
         self.y_coordinate = column * width
-        self.color = WHITE
+        self.color = config.WHITE
         # white -> empty, black -> obstacle, purple -> visited, blue -> path, green -> start node, red -> end
         self.neighbors = []
         self.parent = None
@@ -177,41 +165,41 @@ class Node:
         return self.x_coordinate, self.y_coordinate
 
     def is_visited(self):
-        return self.color == PURPLE
+        return self.color == config.PURPLE
     
     def is_obstacle(self):
-        return self.color == BLACK
+        return self.color == config.BLACK
     
     def is_start(self):
-        return self.color == GREEN
+        return self.color == config.GREEN
     
     def is_end(self):
-        return self.color == RED
+        return self.color == config.RED
     
     def reset(self):
         self.f, self.g, self.h = float('inf'), float('inf'), float('inf')
         self.neighbors = []
         self.parent = None
-        self.color = WHITE
+        self.color = config.WHITE
     
     def close(self):
-        self.color = PURPLE
+        self.color = config.PURPLE
     
     def start(self):
-        self.color = GREEN
+        self.color = config.GREEN
     
     def obstacle(self):
-        self.color = BLACK
+        self.color = config.BLACK
     
     def end(self):
-        self.color = RED
+        self.color = config.RED
     
     def path(self):
-        self.color = BLUE
+        self.color = config.BLUE
 
     def draw(self, screen):
         rectangle = pygame.Rect(self.coordinates(), (self.width, self.width))
-        pygame.draw.rect(screen, self.color, rectangle, (width // 2) - 1)
+        pygame.draw.rect(screen, self.color, rectangle, (config.width // 2) - 1)
 
     def draw_and_act(self, func, screen):
         func()
@@ -223,7 +211,7 @@ class Node:
             for j in range(col - 1, col + 2):
                 print(i, j)
                 # if it's outside the game boundaries
-                if (i == row and j == col) or (i < 0) or (j < 0) or (i >= TOTAL_ROWS) or (j >= TOTAL_COLS):
+                if (i == row and j == col) or (i < 0) or (j < 0) or (i >= config.TOTAL_ROWS) or (j >= config.TOTAL_COLS):
                     continue
                 # if it's a diagonal neighbor, don't add it
                 elif (i == row - 1 and j == col - 1) or (i == row - 1 and j == col + 1) or (i == row + 1 and j == col - 1) or (i == row + 1 and j == col + 1):
