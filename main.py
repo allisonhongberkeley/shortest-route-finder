@@ -19,8 +19,23 @@ TOTAL_ROWS = 50
 TOTAL_COLS = 50
 width = WINDOW_WIDTH // TOTAL_ROWS
 
-reset_img = 0
-exit_img = 0
+
+class Button():
+    button_width = 200
+    button_height = 100
+
+    def __init__ (self, x, y, color, text):
+        self.color = color
+        self.x = x
+        self.y = y
+        self.text = text
+    
+    def draw(self, screen):
+        font = pygame.font.SysFont('Calibri', 35)
+        text = font.render(self.text, False, (0, 0, 0))
+        rect = pygame.Rect((self.x, self.y), (Button.button_width, Button.button_height))
+        pygame.draw.rect(screen, self.color, rect, 0)
+
 
 def main():
     global screen, clock, game_grid, start_key, end, set_started, set_ended
@@ -31,6 +46,8 @@ def main():
     pygame.display.set_caption("Shortest Path Finding: Visualization")
     pygame.display.flip() 
     game_grid = drawAGrid(); 
+    #reset_button = Button(10, 10, BLUE, 'reset')
+    #reset_button.draw(screen)
 
     playing = True
     start_key, end_key = None, None
@@ -123,14 +140,16 @@ def a_star_search():
             neighbors = node.find_neighbors()
             for neighbor in neighbors:
                 if neighbor in visited:
-                    break
+                    continue
                 #create f, g, h values
                 neighbor.h = heuristic(neighbor, end)
                 neighbor.g = node.g + euclidean(neighbor, node)
                 neighbor.f = neighbor.g + neighbor.h
-                # if neighbor is already in the queue and its g score is < than its current g score, don't update
+                # if neighbor is already in the queue and its g score is > than its current g score, don't update
                 if neighbor in scores_tracker and neighbor.g > scores_tracker[neighbor][1]:
-                        continue
+                    #figure out how to not update f, g, h here
+                    #neighbor.f, neighbor.g, neighbor.h = scores_tracker[neighbor][0], scores_tracker[neighbor][1], scores_tracker[neighbor][2]
+                    continue
                 neighbor.parent = node            
                 scores_tracker[neighbor] = [neighbor.f, neighbor.g, neighbor.h]
                 queue.put((neighbor.f, neighbor))
