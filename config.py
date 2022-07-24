@@ -1,4 +1,4 @@
-global screen 
+global screen, game_grid, start_key, end
 WINDOW_WIDTH = 1000
 PURPLE = (203, 195, 227)
 WHITE = (255,255,255)
@@ -9,6 +9,7 @@ RED = (191, 63, 63)
 BLUE = (51, 157, 171)
 PINK = (224, 187, 177)
 TAN = (242, 198, 172)
+LIGHT_PINK = (250, 237, 230)
 BACKGROUND_COLOR = PINK
 TOTAL_ROWS = 50
 TOTAL_COLS = 50    

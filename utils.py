@@ -1,6 +1,6 @@
 import pygame
 import config
-from a_node import Node
+from node import Node
 from math import sqrt
 
 def drawAGrid():
