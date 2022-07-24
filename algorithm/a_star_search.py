@@ -2,7 +2,8 @@ from helper import config
 import pygame
 from queue import PriorityQueue
 from helper.utils import drawAGrid, click, heuristic, euclidean
-
+import time
+import timeout_decorator
 
 def print_path(node):
     while node.parent is not None:
@@ -12,6 +13,7 @@ def print_path(node):
         node.path()
         node.draw(config.screen)
 
+@timeout_decorator.timeout(60)
 def a_star_search():
     queue = PriorityQueue()
     config.start_key.f, config.start_key.g, config.start_key.h = 0, 0, 0
@@ -27,6 +29,7 @@ def a_star_search():
         visited.append(node)
         if (node == config.end):
             print_path(node)
+            print('path found!')
             return
         else:
             neighbors = node.find_neighbors()
