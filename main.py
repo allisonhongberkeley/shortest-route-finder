@@ -2,11 +2,11 @@ import pygame
 from pygame.locals import *
 from queue import PriorityQueue
 import sys
-import config
+import util.config as config
 import time
-from button import Button
-from utils import drawAGrid, click, heuristic, euclidean
-from a_star_search import a_star_search
+from objs.button import Button
+from util.utils import drawAGrid, click, heuristic, euclidean
+from algorithm.a_star_search import a_star_search
 
 
 def main():
@@ -15,12 +15,7 @@ def main():
     config.screen = pygame.display.set_mode((config.WINDOW_WIDTH, config.WINDOW_WIDTH))
     clock = pygame.time.Clock()
     config.screen.fill(config.BACKGROUND_COLOR)
-    pygame.display.set_caption("Shortest Path Finding: Visualization") 
-
-    #start_button = Button((config.WINDOW_WIDTH - Button.button_width) // 2, config.WINDOW_WIDTH // 2 - 2 * Button.button_height, config.BLACK, 'reset')
-    #start_button.draw(config.screen)
-    #options_button = Button((config.WINDOW_WIDTH - Button.button_width) // 2, config.WINDOW_WIDTH  // 2, config.BLACK, 'options')
-    #options_button.draw(config.screen)
+    pygame.display.set_caption("Route Finder: Visualization")
     pygame.display.flip()
 
     config.game_grid = drawAGrid(); 
