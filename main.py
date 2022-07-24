@@ -1,60 +1,87 @@
 import pygame
-from pygame.locals import *
-from queue import PriorityQueue
-import sys
-import util.config as config
-import time
-from objs.button import Button
-from util.utils import drawAGrid, click, heuristic, euclidean
-from algorithm.a_star_search import a_star_search
+import pygame_menu 
+import pygame_menu.utils as util
+import helper.config as config 
+from game import game
 
+pygame.init()
+surface = pygame.display.set_mode((config.WINDOW_WIDTH, config.WINDOW_WIDTH))
 
-def main():
-    global clock, set_started, set_ended
-    pygame.init() 
-    config.screen = pygame.display.set_mode((config.WINDOW_WIDTH, config.WINDOW_WIDTH))
-    clock = pygame.time.Clock()
-    config.screen.fill(config.BACKGROUND_COLOR)
-    pygame.display.set_caption("Route Finder: Visualization")
-    pygame.display.flip()
+theme = pygame_menu.Theme(
+    background_color=config.PINK, 
+    title=True, 
+    title_background_color=config.LIGHT_PINK,
+    title_font_color=config.BLACK, 
+    title_close_button_background_color=config.BLACK, 
+    border_color=config.RED, 
+    border_width=50, 
+    widget_font=pygame_menu.font.FONT_OPEN_SANS, 
+    widget_font_color=config.BLACK,
+    widget_margin=(0, 20))
 
-    config.game_grid = drawAGrid(); 
-    playing = True
-    config.start_key, config.end = None, None
-    set_started, set_ended = False, False
-    while playing: 
+rules_theme=theme.copy()
 
-        events = pygame.event.get()
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                key = pygame.key.name(event.key)
-                print(key)
-                pos = pygame.mouse.get_pos() 
-                clicked_node = click(pos)
-                if key == 'r':
-                    clicked_node.draw_and_act(clicked_node.reset, config.screen)
-                elif not set_started and key == 's': 
-                    config.start_key = clicked_node
-                    clicked_node.draw_and_act(clicked_node.start, config.screen)
-                    set_started = True
-                elif set_started and clicked_node != config.start_key and not set_ended and key == 'e':
-                    config.end = clicked_node 
-                    clicked_node.draw_and_act(clicked_node.end, config.screen)
-                    set_ended = True
-                elif set_started and set_ended and key == 'b':
-                    clicked_node.draw_and_act(clicked_node.obstacle, config.screen)
-                elif key == 'a':
-                    [y.draw_and_act(y.reset, config.screen) for x in config.game_grid for y in x]  
-                    set_started, set_ended = False, False       
-                if key == 'p':
-                    a_star_search()
-            if event.type == pygame.QUIT:
-                playing = False
-            
-        pygame.display.update()
+theme.widget_border_width=2
+
+menu = pygame_menu.Menu(
+    title='', 
+    width=config.WINDOW_WIDTH, 
+    height=config.WINDOW_WIDTH, 
+    mouse_motion_selection=True, 
+    mouse_visible=True, 
+    theme=theme)
+
+menu_rules = pygame_menu.Menu(
+    title='',
+    height=config.WINDOW_WIDTH,
+    width=config.WINDOW_WIDTH,
+    mouse_motion_selection=True,
+    theme=rules_theme
+)
+
+menu_rules.add.label(
+    'instructions',
+    font_name=pygame_menu.font.FONT_OPEN_SANS_BOLD
+    )
     
-    pygame.quit()
-    sys.exit()
+menu_rules.add.vertical_margin(20)
+text = "set a start point: hover over a grid point and press 's'. \n"
+text += "set an end point: hover over a different grid point and press 'e'. \n"
+text += "set barriers: hover over any number of grid points and press 'b'. \n"
+text += "press 'r' to reset a single key. \n."
+text += "press 'p' to find the optimal route. \n"
+text += "press 'a' to restart."
+text_widget = menu_rules.add.label(
+    text,
+    font_size=20,
+)
 
-if __name__ == "__main__":
-    main()
+menu.center_content()
+
+label = menu.add.label(
+    'shortest route: visualizer',
+    font_size=32,
+    background_color=config.LIGHT_PINK,
+    margin=(0, 100)
+)
+
+menu.add.vertical_margin(20)
+
+start_button = menu.add.button(
+    'play',
+    game,
+    button_id='play'
+)
+
+rules_button = menu.add.button(
+    'rules', 
+    menu_rules,
+    button_id='rules'
+)
+quit_button = menu.add.button(
+    'quit',
+    pygame.quit,
+    button_id="quit"
+)
+
+menu.mainloop(surface)

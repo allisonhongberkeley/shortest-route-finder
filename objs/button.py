@@ -1,4 +1,4 @@
-import util.config as config
+import helper.config as config
 import pygame
 
 class Button():

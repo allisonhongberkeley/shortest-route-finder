@@ -1,7 +1,7 @@
-import util.config as config
+from helper import config
 import pygame
 from queue import PriorityQueue
-from util.utils import drawAGrid, click, heuristic, euclidean
+from helper.utils import drawAGrid, click, heuristic, euclidean
 
 
 def print_path(node):
@@ -47,4 +47,5 @@ def a_star_search():
                 queue.put((neighbor.f, neighbor))
         
     print('destination not found')
+
     
