@@ -3,17 +3,16 @@ from pygame.locals import *
 from queue import PriorityQueue
 import sys
 import helper.config as config
-# import time
 from objs.button import Button
 from helper.utils import drawAGrid, click
 from algorithm.a_star_search import a_star_search
 
 
 def game():
-    global clock, set_started, set_ended
+    global set_started, set_ended
     pygame.init() 
     config.screen = pygame.display.set_mode((config.WINDOW_WIDTH, config.WINDOW_WIDTH))
-    clock = pygame.time.Clock()
+    #clock = pygame.time.Clock()
     config.screen.fill(config.BACKGROUND_COLOR)
     pygame.display.set_caption("Route Finder: Visualization")
     pygame.display.flip()
@@ -46,6 +45,7 @@ def game():
                 elif key == 'a':
                     [y.draw_and_act(y.reset, config.screen) for x in config.game_grid for y in x]  
                     set_started, set_ended = False, False       
+                    
                 if set_started and set_ended and key == 'p':
                     a_star_search()
             if event.type == pygame.QUIT:

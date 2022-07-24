@@ -65,7 +65,6 @@ class Node:
         row, col = self.position()
         for i in range(row - 1, row + 2):
             for j in range(col - 1, col + 2):
-                print(i, j)
                 # if it's outside the game boundaries
                 if (i == row and j == col) or (i < 0) or (j < 0) or (i >= config.TOTAL_ROWS) or (j >= config.TOTAL_COLS):
                     continue

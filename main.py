@@ -48,7 +48,7 @@ menu_rules.add.vertical_margin(20)
 text = "set a start point: hover over a grid point and press 's'. \n"
 text += "set an end point: hover over a different grid point and press 'e'. \n"
 text += "set barriers: hover over any number of grid points and press 'b'. \n"
-text += "press 'r' to reset a single key. \n."
+text += "press 'r' to reset a single key. \n"
 text += "press 'p' to find the optimal route. \n"
 text += "press 'a' to restart."
 text_widget = menu_rules.add.label(
