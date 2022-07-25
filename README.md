@@ -1,7 +1,7 @@
 ## Video Demo
 
 ## About the Project
-In this project, I developed a simple visualization game that allows the user to find the optimal route between a start and end destination, and set barriers that cannot be crossed. The program uses A* search the find the shortest route, and a Manhattan distance heuristic. 
+In this project, I developed a simple visualization game that allows the user to find the optimal route between a start and end destination, and set barriers that the path cannot cross. The program uses A* search the find the shortest route, and a Manhattan distance heuristic. 
 
 Menu             |  Route-Finder In Action
 :-------------------------:|:-------------------------:
