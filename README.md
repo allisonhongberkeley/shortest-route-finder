@@ -1,5 +1,5 @@
 ## Video Demo
-[Video Description]([https://link-url-here.org](https://youtu.be/ZnjeGm4yMKo)
+[Video Description]([https://youtu.be/ZnjeGm4yMKo])
 
 ## About the Project
 In this project, I developed a simple visualization game that allows the user to find the optimal route between a start and end destination, and set barriers that the path cannot cross. The program uses A* search the find the shortest route, and a Manhattan distance heuristic. 
