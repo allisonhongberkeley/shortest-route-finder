@@ -7,7 +7,7 @@ Solarized dark             |  Solarized Ocean
 :-------------------------:|:-------------------------:
 ![](https://...Dark.png)  |  ![](https://...Ocean.png)
 
-![alt-text-1](route_ex.png "title-1") ![alt-text-2](menu.png "title-2")
+![alt-text-1](imgs/route_ex.png "title-1") ![alt-text-2](imgs/menu.png "title-2")
 
 ## Local Setup / Getting Started
 
