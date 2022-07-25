@@ -17,10 +17,13 @@ python<version> -m venv env
 ```
 source env/bin/activate
 ```
-
 3. To install all dependencies, run:
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
+```
+4. To start the game, run:
+```
+python3 main.py
 ```
 
 ## Usage
