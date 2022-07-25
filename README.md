@@ -4,6 +4,11 @@
 
 ## Local Setup / Getting Started
 
+1. Clone the repository:
+```
+http
+```
+
 ## Usage
 
 - Click 'Play'.
