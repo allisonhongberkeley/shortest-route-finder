@@ -4,9 +4,23 @@
 
 ## Local Setup / Getting Started
 
-1. Clone the repository:
+1. Clone the repository in your terminal:
 ```
-http
+https://github.com/allisonhongberkeley/shortest-route-finder.git
+```
+2. Make sure you are in the path-visualizer directory. Then, install / create the virtual environment. 
+```
+pip3 install virtualenv
+python<version> -m venv env
+```
+3. Activate the virtual environment. 
+```
+source env/bin/activate
+```
+
+3. To install all dependencies, run:
+```
+pip install -r requirements.txt
 ```
 
 ## Usage
