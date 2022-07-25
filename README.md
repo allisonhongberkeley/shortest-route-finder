@@ -1,6 +1,13 @@
 ## Video Demo
 
 ## About the Project
+In this project, I developed a simple visualization game that allows the user to find the optimal route between a start and end destination, and set barriers that cannot be crossed. The program uses A* search the find the shortest route, and uses Manhattan distance as its heuristic. 
+
+Solarized dark             |  Solarized Ocean
+:-------------------------:|:-------------------------:
+![](https://...Dark.png)  |  ![](https://...Ocean.png)
+
+![alt-text-1](route_ex.png "title-1") ![alt-text-2](menu.png "title-2")
 
 ## Local Setup / Getting Started
 
